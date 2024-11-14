@@ -1,0 +1,45 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+
+# Set print options to display the entire array
+np.set_printoptions(threshold=np.inf)
+
+# Load the dataset
+dataset = pd.read_csv(r"C:\Users\srika\Downloads\SLR - House price prediction (1)\SLR - House price prediction\House_data.csv")
+space = dataset['sqft_living']
+price = dataset['price']
+
+# Reshape and convert to numpy arrays
+x = np.array(space).reshape(-1, 1)
+y = np.array(price)
+
+# Splitting the data into Train and Test sets
+xtrain, xtest, ytrain, ytest = train_test_split(x, y, test_size=1/3, random_state=0)
+
+# Fitting simple linear regression to the Training set
+regressor = LinearRegression()
+regressor.fit(xtrain, ytrain)
+
+# Predicting the prices
+pred = regressor.predict(xtest)
+
+# Visualizing the Training set results
+plt.scatter(xtrain, ytrain, color='red', label="Actual Prices")
+plt.plot(xtrain, regressor.predict(xtrain), color='blue', label="Regression Line")
+plt.title("Training Dataset")
+plt.xlabel("Space (sqft)")
+plt.ylabel("Price")
+plt.legend()
+plt.show()
+
+# Visualizing the Test set results
+plt.scatter(xtest, ytest, color='red', label="Actual Prices")
+plt.plot(xtrain, regressor.predict(xtrain), color='blue', label="Regression Line")  # Reusing the training line for consistency
+plt.title("Test Dataset")
+plt.xlabel("Space (sqft)")
+plt.ylabel("Price")
+plt.legend()
+plt.show()
